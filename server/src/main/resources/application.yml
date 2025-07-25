@@ -1,0 +1,11 @@
+server:
+  port: 8443
+  ssl:
+    enabled: false
+    key-store: classpath:id_ed25519.pub
+    key-store-password: gorock
+    key-store-type: PKCS12
+    key-alias: myssl
+
+logging:
+  config: classpath:log4j2.xml
