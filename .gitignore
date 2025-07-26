@@ -14,6 +14,7 @@ target/
 .idea/vcs.xml
 .idea/encoding.xml
 .idea/misc.xml
+.idea/uiDesigner.xml
 
 ### Eclipse ###
 .apt_generated
@@ -39,3 +40,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+###log ###
+logs/*.*
