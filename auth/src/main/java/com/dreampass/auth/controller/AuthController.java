@@ -9,10 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -38,5 +35,13 @@ public class AuthController {
 
         // 5. 返回给前端
         return ResponseEntity.ok(new TokenResponse(token));
+    }
+
+    @GetMapping("/token/test")
+    public ResponseEntity<String> test(@RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+        String username = JwtTokenUtils.getUsernameFromToken(token);
+        return ResponseEntity.ok("当前用户：" + username);
     }
 }
