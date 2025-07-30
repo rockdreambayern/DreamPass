@@ -1,5 +1,6 @@
 package com.dreampass.user.controller;
 
+import com.dreampass.entity.AccountDo;
 import com.dreampass.user.model.UserDo;
 import com.dreampass.user.service.UserService;
 import jakarta.annotation.Resource;
@@ -18,6 +19,12 @@ public class UserController {
     @PostMapping("/v1/user/add")
     public void addUser(@RequestBody UserDo user) {
         log.debug("user:{}", user);
-        userService.register(user);
+        AccountDo accountDo = AccountDo.builder()
+                        .accountName(user.getAccountName())
+                                .userName(user.getName())
+                                        .password(user.getPassword())
+                                                .phoneNo(user.getPhoneNo())
+                                                        .build();
+        userService.register(accountDo);
     }
 }

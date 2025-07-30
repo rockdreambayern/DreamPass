@@ -15,6 +15,7 @@ target/
 .idea/encoding.xml
 .idea/misc.xml
 .idea/uiDesigner.xml
+.idea/*.*
 
 ### Eclipse ###
 .apt_generated

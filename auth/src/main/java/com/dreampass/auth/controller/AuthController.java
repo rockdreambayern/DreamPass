@@ -22,7 +22,7 @@ public class AuthController {
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
         // 1. 封装用户名密码为认证对象
         UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+                new UsernamePasswordAuthenticationToken(loginRequest.getAccountName(), loginRequest.getPassword());
 
         // 2. 认证用户（会自动调用 UserDetailsService.loadUserByUsername）
         Authentication authentication = authenticationManager.authenticate(authToken);

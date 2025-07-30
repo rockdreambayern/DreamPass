@@ -1,7 +1,9 @@
 package com.dreampass.user.service;
 
+import com.dreampass.entity.AccountDo;
+import com.dreampass.repository.AccountRepository;
 import com.dreampass.user.common.PasswordUtils;
-import com.dreampass.user.model.UserDo;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
-    public void register(UserDo user) {
-        String encryptedPassword = PasswordUtils.hashPassword(user.getPassword());
+    @Resource
+    private AccountRepository accountRepository;
+
+    public void register(AccountDo account) {
+        String encryptedPassword = PasswordUtils.hashPassword(account.getPassword());
         log.debug("加密后密码:{}", encryptedPassword);
-        boolean check = PasswordUtils.matches(user.getPassword(), encryptedPassword);
-        log.debug("密码是否一致:{}", check);
+        account.setPassword(encryptedPassword);
+        accountRepository.addAccount(account);
     }
 }

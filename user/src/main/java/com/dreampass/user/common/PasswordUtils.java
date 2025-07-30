@@ -3,6 +3,11 @@ package com.dreampass.user.common;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class PasswordUtils {
+
+    private PasswordUtils() {
+
+    }
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public static String hashPassword(String rawPassword) {
