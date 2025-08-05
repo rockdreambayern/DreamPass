@@ -7,6 +7,10 @@ import com.dreampass.user.entity.AccountRoleRefDo;
 
 public class AccountRoleRefConvert {
 
+    private AccountRoleRefConvert() {
+
+    }
+
     public static AccountRoleRefDo accountRoleRefPo2Do(AccountRoleRefPo po) {
         return AccountRoleRefDo.builder()
                 .accountName(po.getAccountName())

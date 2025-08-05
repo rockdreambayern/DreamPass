@@ -7,6 +7,9 @@ import java.util.Date;
 
 public class AccountConvert {
 
+    private AccountConvert() {
+    }
+
     public static AccountDo accountPo2Do(AccountPo po) {
         return AccountDo.builder()
                 .tenantId(po.getTenantId())

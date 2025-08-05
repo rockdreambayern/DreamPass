@@ -7,6 +7,10 @@ import com.dreampass.role.entity.RoleResourceRefDo;
 
 public class RoleResourceRefConvert {
 
+    private RoleResourceRefConvert() {
+
+    }
+
     public static RoleResourceRefPo roleResourceRefDo2Po(RoleResourceRefDo roleResourceRefDo) {
         RoleResourceRefPo po = new RoleResourceRefPo();
         po.setTenantId(roleResourceRefDo.getTenantId());

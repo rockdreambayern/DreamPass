@@ -9,6 +9,10 @@ import com.dreampass.resource.enums.ResourceTypeEnum;
 
 public class ResourceConvert {
 
+    private ResourceConvert() {
+
+    }
+
     public static ResourcePo resourceDo2Po(ResourceDo resourceDo) {
         if (resourceDo == null) {
             return null;

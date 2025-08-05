@@ -7,6 +7,10 @@ import com.dreampass.role.entity.RoleDo;
 
 public class RoleConvert {
 
+    private RoleConvert() {
+
+    }
+
     public static RolePo roleDo2Po(RoleDo roleDo) {
         if (roleDo == null) {
             return null;

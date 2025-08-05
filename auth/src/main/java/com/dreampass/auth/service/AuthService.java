@@ -1,13 +1,6 @@
 package com.dreampass.auth.service;
 
 import com.dreampass.auth.util.JwtTokenUtils;
-import com.dreampass.resource.entity.ResourceDo;
-import com.dreampass.resource.service.ResourceService;
-import com.dreampass.role.entity.RoleResourceRefDo;
-import com.dreampass.role.service.RoleService;
-import com.dreampass.user.entity.AccountRoleRefDo;
-import com.dreampass.user.service.UserService;
-import com.dreampass.util.ContextUtils;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
