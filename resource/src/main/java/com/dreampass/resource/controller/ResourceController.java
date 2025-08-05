@@ -1,9 +1,9 @@
 package com.dreampass.resource.controller;
 
-import com.dreampass.controller.response.Result;
 import com.dreampass.resource.entity.ResourceDo;
 import com.dreampass.resource.service.ResourceService;
 import jakarta.annotation.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +14,8 @@ public class ResourceController {
     private ResourceService resourceService;
 
     @PostMapping("/add")
-    public Result<Void> addResource(@RequestBody ResourceDo resource) {
+    public ResponseEntity<Void> addResource(@RequestBody ResourceDo resource) {
         resourceService.addResource(resource);
-        return Result.success(null);
+        return ResponseEntity.ok().build();
     }
-
-
 }

@@ -1,18 +1,24 @@
 package com.dreampass.resource.entity;
 
+import com.dreampass.infrastructure.tenant.TenantBindable;
 import com.dreampass.resource.enums.ResourceMethodEnum;
 import com.dreampass.resource.enums.ResourceTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @Builder
-public class ResourceDo {
+public class ResourceDo implements TenantBindable {
 
+    @JsonIgnore
     private Long id;
 
+    @JsonIgnore
+    @Setter
     private Long tenantId;
 
     private String name;

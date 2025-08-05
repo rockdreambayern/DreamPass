@@ -11,5 +11,5 @@ public interface ResourceRepository {
 
     void addResource(ResourceDo resource);
 
-    List<ResourceDo> loads(List<String> resourceCodes);
+    List<ResourceDo> loads(Long tenantId, List<String> resourceNames);
 }

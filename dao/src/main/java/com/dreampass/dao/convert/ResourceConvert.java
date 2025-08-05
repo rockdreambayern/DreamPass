@@ -36,7 +36,7 @@ public class ResourceConvert {
                 .name(po.getName())
                 .type(ResourceTypeEnum.findByCode(po.getType()))
                 .path(po.getPath())
-                .method(ResourceMethodEnum.findByCode(po.getType()))
+                .method(ResourceMethodEnum.findByCode(po.getMethod()))
                 .parentId(po.getParentId())
                 .description(po.getDescription())
                 .visible(po.getVisible())

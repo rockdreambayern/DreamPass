@@ -18,10 +18,11 @@
     <modules>
         <module>infrastructure</module>
         <module>resource</module>
+        <module>role</module>
         <module>user</module>
-        <module>server</module>
         <module>auth</module>
         <module>dao</module>
+        <module>server</module>
     </modules>
 
     <properties>

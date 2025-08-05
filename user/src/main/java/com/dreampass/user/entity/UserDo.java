@@ -1,4 +1,4 @@
-package com.dreampass.user.model;
+package com.dreampass.user.entity;
 
 import lombok.Data;
 
