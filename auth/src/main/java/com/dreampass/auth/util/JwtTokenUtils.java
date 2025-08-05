@@ -1,5 +1,6 @@
 package com.dreampass.auth.util;
 
+import com.dreampass.infrastructure.exception.BizException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -48,11 +49,7 @@ public class JwtTokenUtils {
      * 从 token 中获取权限列表
      */
     public static List<SimpleGrantedAuthority> getAuthoritiesFromToken(String token) {
-        String authorities = (String) getClaims(token).get(CLAIM_KEY_AUTHORITIES);
-        if (authorities == null || authorities.isEmpty()) return Collections.emptyList();
-        return Arrays.stream(authorities.split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        return (List<SimpleGrantedAuthority>) getClaims(token).get(CLAIM_KEY_AUTHORITIES);
     }
 
     /**
@@ -82,8 +79,7 @@ public class JwtTokenUtils {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (JwtException e) {
-            // TODO Define dedicated exception
-            throw new RuntimeException("Token 无效: " + e.getMessage(), e);
+            throw new BizException("Token无效", e);
         }
     }
 }

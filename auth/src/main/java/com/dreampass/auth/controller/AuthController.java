@@ -2,14 +2,16 @@ package com.dreampass.auth.controller;
 
 import com.dreampass.auth.controller.model.LoginRequest;
 import com.dreampass.auth.controller.model.TokenResponse;
+import com.dreampass.auth.service.AccountPermissionService;
+import com.dreampass.auth.service.AuthService;
 import com.dreampass.auth.util.JwtTokenUtils;
+import com.dreampass.resource.entity.ResourceDo;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -18,30 +20,30 @@ public class AuthController {
     @Resource
     private AuthenticationManager authenticationManager;
 
+    @Resource
+    private AuthService authService;
+
+    @Resource
+    private AccountPermissionService accountPermissionService;
+
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
-        // 1. 封装用户名密码为认证对象
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(loginRequest.getAccountName(), loginRequest.getPassword());
-
-        // 2. 认证用户（会自动调用 UserDetailsService.loadUserByUsername）
-        Authentication authentication = authenticationManager.authenticate(authToken);
-
-        // 3. 获取认证后的 UserDetails（包含权限信息）
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        // 4. 生成 Token
-        String token = JwtTokenUtils.generateToken(userDetails);
-
-        // 5. 返回给前端
+        String token = authService.login(loginRequest.getAccountName(), loginRequest.getPassword());
         return ResponseEntity.ok(new TokenResponse(token));
     }
 
     @GetMapping("/token/test")
     public ResponseEntity<String> test(@RequestHeader("Authorization") String authHeader) {
-
         String token = authHeader.replace("Bearer ", "");
-        String username = JwtTokenUtils.getUsernameFromToken(token);
-        return ResponseEntity.ok("当前用户：" + username);
+        String accountName = JwtTokenUtils.getUsernameFromToken(token);
+        return ResponseEntity.ok("当前用户：" + accountName);
+    }
+
+    @GetMapping("/resources")
+    public ResponseEntity<List<ResourceDo>> queryResources(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String accountName = JwtTokenUtils.getUsernameFromToken(token);
+        List<ResourceDo> resources = accountPermissionService.queryResources(accountName);
+        return ResponseEntity.ok(resources);
     }
 }

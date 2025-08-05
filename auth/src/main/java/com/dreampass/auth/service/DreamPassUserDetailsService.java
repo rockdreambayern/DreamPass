@@ -1,7 +1,7 @@
 package com.dreampass.auth.service;
 
 import com.dreampass.entity.AccountDo;
-import com.dreampass.repository.AccountRepository;
+import com.dreampass.user.repository.AccountRepository;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
