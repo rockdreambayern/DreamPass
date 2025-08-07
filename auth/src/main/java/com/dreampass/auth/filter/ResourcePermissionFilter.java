@@ -2,6 +2,8 @@ package com.dreampass.auth.filter;
 
 import com.dreampass.resource.entity.ResourceDo;
 import com.dreampass.resource.enums.ResourceTypeEnum;
+import com.dreampass.resource.service.ResourceService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,11 +20,29 @@ import java.util.Objects;
 @Component
 public class ResourcePermissionFilter extends OncePerRequestFilter {
 
+    @Resource
+    private ResourceService resourceService;
+
+    private static final List<String> NOT_AUTH_URIS = List.of("/v1/user/add", "/v1/auth/login");
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
+        // 排除无需处理的路径
+        if (NOT_AUTH_URIS.contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        ResourceDo resource = resourceService.getAPIResource(request.getRequestURI());
+        // 为了节省资源配置的时间，API未配置资源无需进行权限控制。
+        if (resource == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

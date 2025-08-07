@@ -5,9 +5,9 @@ import com.dreampass.auth.controller.model.TokenResponse;
 import com.dreampass.auth.service.AccountPermissionService;
 import com.dreampass.auth.service.AuthService;
 import com.dreampass.auth.util.JwtTokenUtils;
+import com.dreampass.entity.Result;
 import com.dreampass.resource.entity.ResourceDo;
 import jakarta.annotation.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,23 +27,23 @@ public class AuthController {
     private AccountPermissionService accountPermissionService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
+    public Result<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
         String token = authService.login(loginRequest.getAccountName(), loginRequest.getPassword());
-        return ResponseEntity.ok(new TokenResponse(token));
+        return Result.success(new TokenResponse(token));
     }
 
     @GetMapping("/token/test")
-    public ResponseEntity<String> test(@RequestHeader("Authorization") String authHeader) {
+    public Result<String> test(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String accountName = JwtTokenUtils.getUsernameFromToken(token);
-        return ResponseEntity.ok("当前用户：" + accountName);
+        return Result.success("当前用户：" + accountName);
     }
 
     @GetMapping("/resources")
-    public ResponseEntity<List<ResourceDo>> queryResources(@RequestHeader("Authorization") String authHeader) {
+    public Result<List<ResourceDo>> queryResources(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String accountName = JwtTokenUtils.getUsernameFromToken(token);
         List<ResourceDo> resources = accountPermissionService.queryResources(accountName);
-        return ResponseEntity.ok(resources);
+        return Result.success(resources);
     }
 }

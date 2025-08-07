@@ -4,7 +4,7 @@ import com.dreampass.dao.convert.AccountRoleRefConvert;
 import com.dreampass.dao.mapper.AccountRoleRefPoMapper;
 import com.dreampass.dao.model.AccountRoleRefPo;
 import com.dreampass.dao.model.AccountRoleRefPoExample;
-import com.dreampass.entity.AccountDo;
+import com.dreampass.user.entity.AccountDo;
 import com.dreampass.dao.convert.AccountConvert;
 import com.dreampass.dao.mapper.AccountPoMapper;
 import com.dreampass.dao.model.AccountPo;
@@ -14,6 +14,7 @@ import com.dreampass.user.entity.AccountRoleRefDo;
 import com.dreampass.user.repository.AccountRepository;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Resource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -44,9 +45,14 @@ public class MySQLAccountRepository implements AccountRepository {
     @Override
     public void addAccount(AccountDo accountDo) {
         AccountPo po = AccountConvert.accountDo2Po(accountDo);
-        if (accountMapper.insert(po) != 1) {
-            throw new BizException("添加账号失败");
+        try {
+            if (accountMapper.insert(po) != 1) {
+                throw new BizException("添加账号失败");
+            }
+        } catch (DuplicateKeyException e) {
+            throw new BizException("账号已存在");
         }
+
     }
 
     @Override

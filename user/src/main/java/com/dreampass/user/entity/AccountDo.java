@@ -1,4 +1,4 @@
-package com.dreampass.entity;
+package com.dreampass.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

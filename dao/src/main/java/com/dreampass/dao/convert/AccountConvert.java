@@ -1,6 +1,6 @@
 package com.dreampass.dao.convert;
 
-import com.dreampass.entity.AccountDo;
+import com.dreampass.user.entity.AccountDo;
 import com.dreampass.dao.model.AccountPo;
 
 import java.util.Date;
@@ -24,6 +24,7 @@ public class AccountConvert {
 
     public static AccountPo accountDo2Po(AccountDo accountDo) {
         AccountPo po = new AccountPo();
+        po.setTenantId(accountDo.getTenantId());
         po.setAccountName(accountDo.getAccountName());
         po.setUserName(accountDo.getUserName());
         po.setPassword(accountDo.getPassword());

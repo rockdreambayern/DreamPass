@@ -24,7 +24,7 @@
         </Root>
 
         <!-- 自定义包级别 -->
-        <Logger name="com.dreampass" level="debug" additivity="false">
+        <Logger name="com.dreampass" level="info" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
         </Logger>

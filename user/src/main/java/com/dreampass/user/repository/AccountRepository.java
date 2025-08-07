@@ -1,6 +1,6 @@
 package com.dreampass.user.repository;
 
-import com.dreampass.entity.AccountDo;
+import com.dreampass.user.entity.AccountDo;
 import com.dreampass.user.entity.AccountRoleRefDo;
 
 import java.util.List;

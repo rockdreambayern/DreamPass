@@ -1,5 +1,7 @@
 package com.dreampass.infrastructure.exception;
 
+import lombok.Getter;
+
 public class BizException extends RuntimeException {
 
     public BizException(String msg) {

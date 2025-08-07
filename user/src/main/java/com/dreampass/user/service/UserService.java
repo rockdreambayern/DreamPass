@@ -1,6 +1,7 @@
 package com.dreampass.user.service;
 
-import com.dreampass.entity.AccountDo;
+import com.dreampass.infrastructure.exception.BizException;
+import com.dreampass.user.entity.AccountDo;
 import com.dreampass.infrastructure.tenant.annotation.Tenantable;
 import com.dreampass.user.entity.AccountRoleRefDo;
 import com.dreampass.user.repository.AccountRepository;
@@ -19,9 +20,13 @@ public class UserService {
     private AccountRepository accountRepository;
 
     public void register(AccountDo account) {
+        if (!PasswordUtils.isStrong(account.getPassword())) {
+            throw new BizException("密码强度不符合要求，需包含大小写字母、数字、特殊字符，且长度不少于8位");
+        }
+
         String encryptedPassword = PasswordUtils.hashPassword(account.getPassword());
-        log.debug("加密后密码:{}", encryptedPassword);
         account.setPassword(encryptedPassword);
+        account.setTenantId(123L);
         accountRepository.addAccount(account);
     }
 
