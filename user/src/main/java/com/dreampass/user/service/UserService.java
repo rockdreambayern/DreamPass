@@ -38,4 +38,9 @@ public class UserService {
     public List<AccountRoleRefDo> listAccountRoleRefs(Long tenantId, String accountName) {
         return accountRepository.listAccountRoleRefs(tenantId, accountName);
     }
+
+    @Tenantable
+    public AccountDo getAccount(String accountName) {
+        return accountRepository.loadAccount(accountName);
+    }
 }

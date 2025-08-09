@@ -7,18 +7,17 @@ import com.dreampass.user.entity.UserDo;
 import com.dreampass.user.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequestMapping("/v1/user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
-    @PostMapping("/v1/user/add")
+    @PostMapping("/add")
     public Result<Void> addUser(@RequestBody UserDo user) {
         AccountDo accountDo = AccountDo
                 .builder()
@@ -31,7 +30,7 @@ public class UserController {
         return Result.success();
     }
 
-    @PostMapping("/v1/user/add_role")
+    @PostMapping("/add_role")
     public Result<Void> addRoleToAccount(@RequestBody AccountRoleRefDo accountRoleRef) {
         userService.addRoleToAccount(accountRoleRef);
         return Result.success();

@@ -7,6 +7,8 @@ import com.dreampass.auth.service.AuthService;
 import com.dreampass.auth.util.JwtTokenUtils;
 import com.dreampass.entity.Result;
 import com.dreampass.resource.entity.ResourceDo;
+import com.dreampass.user.entity.AccountDo;
+import com.dreampass.user.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.List;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
+    private static final String BEARER= "Bearer ";
+
     @Resource
     private AuthenticationManager authenticationManager;
 
@@ -26,6 +30,9 @@ public class AuthController {
     @Resource
     private AccountPermissionService accountPermissionService;
 
+    @Resource
+    private UserService userService;
+
     @PostMapping("/login")
     public Result<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
         String token = authService.login(loginRequest.getAccountName(), loginRequest.getPassword());
@@ -34,16 +41,27 @@ public class AuthController {
 
     @GetMapping("/token/test")
     public Result<String> test(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
+        String token = authHeader.replace(BEARER, "");
         String accountName = JwtTokenUtils.getUsernameFromToken(token);
         return Result.success("当前用户：" + accountName);
     }
 
     @GetMapping("/resources")
     public Result<List<ResourceDo>> queryResources(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
+        String token = authHeader.replace(BEARER, "");
         String accountName = JwtTokenUtils.getUsernameFromToken(token);
         List<ResourceDo> resources = accountPermissionService.queryResources(accountName);
         return Result.success(resources);
+    }
+
+    @GetMapping("/account")
+    public Result<AccountDo> getUser(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace(BEARER, "");
+        String accountName = JwtTokenUtils.getUsernameFromToken(token);
+        if (accountName == null) {
+            return Result.success();
+        }
+        AccountDo account = userService.getAccount(accountName);
+        return Result.success(account);
     }
 }
