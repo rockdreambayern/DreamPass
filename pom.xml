@@ -23,6 +23,7 @@
         <module>auth</module>
         <module>dao</module>
         <module>server</module>
+        <module>test</module>
     </modules>
 
     <properties>
@@ -84,6 +85,12 @@
                         <artifactId>mybatis-generator-core</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>1.4.1</version> <!-- 或最新版 -->
             </dependency>
 
             <dependency>
