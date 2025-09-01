@@ -1,14 +1,12 @@
 package com.dreampass.dao.repository;
 
 import com.dreampass.dao.convert.AccountRoleRefConvert;
+import com.dreampass.dao.mapper.AccountProfilePoMapper;
 import com.dreampass.dao.mapper.AccountRoleRefPoMapper;
-import com.dreampass.dao.model.AccountRoleRefPo;
-import com.dreampass.dao.model.AccountRoleRefPoExample;
+import com.dreampass.dao.model.*;
 import com.dreampass.user.entity.AccountDo;
 import com.dreampass.dao.convert.AccountConvert;
 import com.dreampass.dao.mapper.AccountPoMapper;
-import com.dreampass.dao.model.AccountPo;
-import com.dreampass.dao.model.AccountPoExample;
 import com.dreampass.infrastructure.exception.BizException;
 import com.dreampass.user.entity.AccountRoleRefDo;
 import com.dreampass.user.repository.AccountRepository;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,6 +29,9 @@ public class MySQLAccountRepository implements AccountRepository {
     @Resource
     private AccountRoleRefPoMapper accountRoleRefMapper;
 
+    @Resource
+    private AccountProfilePoMapper accountProfileMapper;
+
 
     @Override
     public AccountDo loadAccount(String accountName) {
@@ -39,7 +41,13 @@ public class MySQLAccountRepository implements AccountRepository {
         if (CollectionUtils.isEmpty(accounts)) {
             return null;
         }
-        return AccountConvert.accountPo2Do(accounts.get(0));
+        AccountPo accountPo = accounts.get(0);
+        AccountProfilePoExample profileExample = new AccountProfilePoExample();
+        profileExample.createCriteria().andTenantIdEqualTo(accountPo.getTenantId())
+                        .andAccountNameEqualTo(accountPo.getAccountName())
+                                .andDeleteTimeIsNull();
+        List<AccountProfilePo> accountProfilePos = accountProfileMapper.selectByExample(profileExample);
+        return AccountConvert.accountPo2Do(accountPo, accountProfilePos.isEmpty() ? null : accountProfilePos.get(0));
     }
 
     @Override
@@ -73,5 +81,31 @@ public class MySQLAccountRepository implements AccountRepository {
                         .andDeleteTimeIsNull();
         List<AccountRoleRefPo> pos =  accountRoleRefMapper.selectByExample(example);
         return pos.stream().map(AccountRoleRefConvert::accountRoleRefPo2Do).toList();
+    }
+
+    @Override
+    //TODO 增加事务
+    public void saveProfile(AccountDo account) {
+        AccountProfilePoExample profileExample = new AccountProfilePoExample();
+        profileExample.createCriteria().andTenantIdEqualTo(account.getTenantId())
+                .andAccountNameEqualTo(account.getAccountName())
+                .andDeleteTimeIsNull();
+        List<AccountProfilePo> accountProfilePos = accountProfileMapper.selectByExample(profileExample);
+        AccountProfilePo accountProfilePo = new AccountProfilePo();
+        if (accountProfilePos.isEmpty()) {
+            accountProfilePo.setTenantId(account.getTenantId());
+            accountProfilePo.setAccountName(account.getAccountName());
+            accountProfilePo.setAvatarKey(account.getAvatarKey());
+            accountProfilePo.setCreateTime(new Date());
+            accountProfilePo.setUpdateTime(new Date());
+            if (accountProfileMapper.insert(accountProfilePo) != 1) {
+                throw new BizException("保存账号资料失败");
+            }
+        } else {
+            accountProfilePo.setAvatarKey(account.getAvatarKey());
+            if (accountProfileMapper.updateByExampleSelective(accountProfilePo, profileExample) != 0) {
+                throw new BizException("保存账号资料失败");
+            }
+        }
     }
 }

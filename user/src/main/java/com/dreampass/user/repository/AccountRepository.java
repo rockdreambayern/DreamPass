@@ -33,4 +33,12 @@ public interface AccountRepository {
      * @return List<AccountRoleRefDo> 账号角色关系列表
      */
     List<AccountRoleRefDo> listAccountRoleRefs(Long tenantId, String accountName);
+
+    /**
+     * 保存账号档案
+     * @param account 账号
+     */
+    void saveProfile(AccountDo account);
+
+
 }

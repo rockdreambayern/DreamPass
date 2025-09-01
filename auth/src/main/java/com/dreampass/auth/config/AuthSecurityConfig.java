@@ -36,7 +36,7 @@ public class AuthSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/auth/login", "/v1/user/add").permitAll()  // 放行登录接口
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/auth/login", "/v1/user/add", "/s3/**").permitAll()  // 放行登录接口
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, AnonymousAuthenticationFilter.class)
                 .addFilterAfter(resourcePermissionFilter, JwtAuthenticationFilter.class);

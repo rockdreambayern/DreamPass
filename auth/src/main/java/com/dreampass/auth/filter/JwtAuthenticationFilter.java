@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 排除无需处理的路径
-        if (NOT_AUTH_URIS.contains(request.getRequestURI())) {
+        if (NOT_AUTH_URIS.contains(request.getRequestURI()) || request.getRequestURI().startsWith("/s3")) {
             filterChain.doFilter(request, response);
             return;
         }

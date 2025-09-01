@@ -8,7 +8,9 @@ import com.dreampass.user.repository.AccountRepository;
 import com.dreampass.user.common.PasswordUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -28,6 +30,17 @@ public class UserService {
         account.setPassword(encryptedPassword);
         account.setTenantId(123L);
         accountRepository.addAccount(account);
+    }
+
+    @Tenantable
+    public void modifyAccount(AccountDo modifyAccount) {
+        AccountDo account = accountRepository.loadAccount(modifyAccount.getAccountName());
+        Assert.notNull(account, "账号不存在");
+        if (StringUtils.isBlank(modifyAccount.getAvatarKey())) {
+            return;
+        }
+        account.setAvatarKey(modifyAccount.getAvatarKey());
+        accountRepository.saveProfile(modifyAccount);
     }
 
     @Tenantable

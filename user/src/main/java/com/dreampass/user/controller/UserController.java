@@ -30,6 +30,12 @@ public class UserController {
         return Result.success();
     }
 
+    @PostMapping("/modify")
+    public Result<Void> modify(@RequestBody AccountDo account) {
+        userService.modifyAccount(account);
+        return Result.success();
+    }
+
     @PostMapping("/add_role")
     public Result<Void> addRoleToAccount(@RequestBody AccountRoleRefDo accountRoleRef) {
         userService.addRoleToAccount(accountRoleRef);

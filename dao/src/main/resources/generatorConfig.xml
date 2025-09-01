@@ -15,6 +15,6 @@
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.dreampass.dao.mapper" targetProject="src/main/java"/>
 
-        <table tableName="orders" domainObjectName="OrderPo"/>
+        <table tableName="account_profile" domainObjectName="AccountProfilePo"/>
     </context>
 </generatorConfiguration>
